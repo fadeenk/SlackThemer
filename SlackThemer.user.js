@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Slack Full Theme plugin
 // @namespace    http://mrkannah.com/
-// @version      0.1
+// @version      1.0.1
 // @description  Applies the side bar colors for slack to the entire application
 // @author       Fadee Kannah
 // @match        https://*.slack.com/*
@@ -15,9 +15,11 @@ $(document).ready(function(){
             clearInterval(checkInterval);
             setTimeout(function(){
                 var colors = getColors();
-                applyColors(colors);
-                addListner();
-            },500);
+                setTimeout(function(){
+                  applyColors(colors);
+                  addListner();
+                },300);
+            },100);
         }
     },200);
 });
@@ -27,12 +29,12 @@ function Ready(){
 }
 
 function getColors(){
-    $('#team_menu').click();
-    $('#member_prefs_item > a').click();
-    var colors = $('#sidebar_theme_custom').val().split(',');
-    $('.dialog_go ').click();
+    $('#team_menu')[0].click();
+    $('#member_prefs_item > a')[0].click();
+    var colors = $('#sidebar_theme_custom').val().toString().split(',');
+    $('.dialog_go ')[0].click();
     return colors;
-    /* Array Index 
+    /* Array Index
 0 Col BG
 1 Menu BG
 2 Active Item
@@ -52,7 +54,7 @@ function applyColors(colors){
     style.id = 'fullThemePlugin';
 
     //header & footer styles
-    style.innerHTML = '#header{ background:'+colors[1]+'}' + 
+    style.innerHTML = '#header{ background:'+colors[1]+'}' +
         '#end_div{background:'+colors[1]+'}' +
         '#channel_members_toggle{ background:'+colors[1]+'!important}'+
         '#footer{background:'+colors[0]+'}'+
@@ -73,7 +75,7 @@ function applyColors(colors){
         '.msg_inline_file_preview_title{color:'+colors[2]+'!important}'+
         'body{background:'+colors[0]+'}';
 
-    //scroll bar styles 
+    //scroll bar styles
     style.innerHTML += '.monkey_scroll_handle_inner{background:'+colors[2]+'!important;border:0!important}' +
         '.monkey_scroll_handle{position:relative;left:-1px!important;width:10px!important}';
 
@@ -91,7 +93,7 @@ function addListner(){
                         changeColors();
                     });
                     $('input[name="sidebar_theme_rd"]').on('change',function(){
-                        changeColors();    
+                        changeColors();
                     });
                     $('#sidebar_theme_custom').on('input change',function() {
                         changeColors();
@@ -103,7 +105,7 @@ function addListner(){
                     });
                 },500);
             });
-    });                                   
+    });
 }
 
 function changeColors(){
