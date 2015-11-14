@@ -5,24 +5,34 @@
 // @description  Applies the side bar colors for slack to the entire application
 // @author       Fadee Kannah
 // @match        https://*.slack.com/*
-// @grant        none
+// @grant        GM_setValue
+// @grant        GM_getValue
 // @run-at       document-end
 // ==/UserScript==
 
 $(document).ready(function(){
     var checkInterval = setInterval(function(){
         if(Ready()){
+            var colors = GM_getValue('ST_Colors');
             clearInterval(checkInterval);
-            setTimeout(function(){
-                var colors = getColors();
+            if(colors){
+                applyColors(colors);
+                setUp(colors)
+            }
+            else{
                 setTimeout(function(){
-                  applyColors(colors);
-                  addListner();
-                },300);
-            },100);
+                    colors = getColors();
+                    setTimeout(setUp(colors),300);
+                },100);
+            }
         }
     },200);
 });
+
+function setUp(colors){
+    applyColors(colors);
+    addListner();
+}
 
 function Ready(){
     return parseInt($('#loading_welcome').css('opacity')) ? 0 : 1;
@@ -47,6 +57,7 @@ function getColors(){
 }
 
 function applyColors(colors){
+    GM_setValue('ST_Colors',colors);
     console.log(colors);
     var head = document.getElementsByTagName('head')[0];
     var style = document.createElement('style');
@@ -87,24 +98,24 @@ function applyColors(colors){
 
 function addListner(){
     $('#team_menu').on('click',function(){
-            $('#member_prefs_item > a').on('click',function(){
-                setTimeout(function(){
-                    $('.color_hex').on('input',function(){
+        $('#member_prefs_item > a').on('click',function(){
+            setTimeout(function(){
+                $('.color_hex').on('input',function(){
+                    changeColors();
+                });
+                $('input[name="sidebar_theme_rd"]').on('change',function(){
+                    changeColors();
+                });
+                $('#sidebar_theme_custom').on('input change',function() {
+                    changeColors();
+                });
+                $('.color_swatch').on('click', function(){
+                    setTimeout(function(){
                         changeColors();
-                    });
-                    $('input[name="sidebar_theme_rd"]').on('change',function(){
-                        changeColors();
-                    });
-                    $('#sidebar_theme_custom').on('input change',function() {
-                        changeColors();
-                    });
-                    $('.color_swatch').on('click', function(){
-                        setTimeout(function(){
-                            changeColors();
-                        },700);
-                    });
-                },500);
-            });
+                    },700);
+                });
+            },500);
+        });
     });
 }
 
