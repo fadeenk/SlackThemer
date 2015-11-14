@@ -13,11 +13,10 @@
 $(document).ready(function(){
     var checkInterval = setInterval(function(){
         if(Ready()){
-            var colors = GM_getValue('ST_Colors');
+            var colors = GM_getValue('ST_Colors').toString().split(',');
             clearInterval(checkInterval);
             if(colors){
-                applyColors(colors);
-                setUp(colors)
+                setUp(colors);
             }
             else{
                 setTimeout(function(){
