@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Slack Full Theme plugin
 // @namespace    http://mrkannah.com/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Applies the side bar colors for slack to the entire application
 // @author       Fadee Kannah
 // @match        https://*.slack.com/*
